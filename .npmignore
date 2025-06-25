@@ -1,0 +1,30 @@
+# 源码文件
+src/
+tsconfig.json
+
+# 开发相关文件
+docs/
+.gitignore
+.git/
+*.log
+*.tmp
+
+# 依赖和构建缓存
+node_modules/
+.pnpm-debug.log*
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 测试文件
+test/
+tests/
+*.test.ts
+*.spec.ts
+
+# 其他
+.DS_Store
+Thumbs.db 
