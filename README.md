@@ -2,6 +2,9 @@
 
 一个用于获取YAPI接口详情的MCP（Model Context Protocol）服务器，支持与Cursor、Claude Desktop等AI开发工具集成。
 
+<a href="https://glama.ai/mcp/servers/@Gorvey/yapi-get-interface-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@Gorvey/yapi-get-interface-mcp/badge" alt="YAPI Interface Server MCP server" />
+</a>
 
 ## 使用方法
 
@@ -29,9 +32,6 @@ AI工具会自动调用该工具并返回接口的完整信息，包括：
 | `--email` | YAPI登录邮箱 | 是 | `--email admin@company.com` |
 | `--password` | YAPI登录密码 | 是 | `--password mypassword` |
 | `--url` | YAPI服务器地址 | 是 | `--url https://yapi.company.com` |
-
-
-
 
 ## 快速开始
 
@@ -75,7 +75,6 @@ pnpm install
 # 构建项目
 pnpm run build
 ```
-
 
 ## 开发指南
 
