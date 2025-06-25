@@ -23,11 +23,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/你的用户名/你的仓库名.git"
+    "url": "https://github.com/Gorvey/yapi-get-interface-mcp.git"
   },
-  "homepage": "https://github.com/你的用户名/你的仓库名#readme",
+  "homepage": "https://github.com/Gorvey/yapi-get-interface-mcp#readme",
   "bugs": {
-    "url": "https://github.com/你的用户名/你的仓库名/issues"
+    "url": "https://github.com/Gorvey/yapi-get-interface-mcp/issues"
   },
   "scripts": {
     "clean": "rimraf dist",

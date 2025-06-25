@@ -1,158 +1,154 @@
-When development is completed, make sure to run `npm run build` to build your server! This is a very important step in getting your server to connect.
+# yapi-get-interface-mcp
 
-Let's now test your server from an existing MCP host, Cursor.
+一个用于获取YAPI接口详情的MCP（Model Context Protocol）服务器，支持与Cursor、Claude Desktop等AI开发工具集成。
 
-## Testing your server with Cursor
 
-Cursor is a powerful IDE that supports MCP servers. Let's configure Cursor to use your MCP server.
+## 使用方法
 
-First, make sure you have Cursor installed. [You can download the latest version here.](https://cursor.com)
+### 可用工具
 
-We'll need to configure Cursor to use your MCP server. You can place this configuration in two locations, depending on your use case:
+#### yapi-get-interface
+根据接口ID获取YAPI接口详情
 
-### Project Configuration
-For tools specific to a project, create a `.cursor/mcp.json` file in your project directory. This allows you to define MCP servers that are only available within that specific project.
+**参数：**
+- `id`：接口ID（数字格式）
 
-![Cursor Project Configuration](./docs/assets/cursor-project-configuration.png)
+**使用示例：**
+![](./docs/assets/yapi-get-interface.png)
 
-### Global Configuration
-For tools that you want to use across all projects, create a `~/.cursor/mcp.json` file in your home directory. This makes MCP servers available in all your Cursor workspaces.
+AI工具会自动调用该工具并返回接口的完整信息，包括：
+- 接口基本信息（名称、路径、方法等）
+- 请求参数（路径参数、查询参数、请求头、请求体）
+- 响应信息（响应体、响应类型等）
+- 其他元数据（创建时间、状态、标签等）
 
-Create or edit the configuration file with the following content:
+### 命令行参数
+
+| 参数 | 说明 | 必需 | 示例 |
+|------|------|------|------|
+| `--email` | YAPI登录邮箱 | 是 | `--email admin@company.com` |
+| `--password` | YAPI登录密码 | 是 | `--password mypassword` |
+| `--url` | YAPI服务器地址 | 是 | `--url https://yapi.company.com` |
+
+
+
+
+## 快速开始
+
+#### 在Cursor中配置
+
+创建或编辑 `.cursor/mcp.json` 文件（项目级配置）或 `~/.cursor/mcp.json` 文件（全局配置）：
 
 ```json
 {
     "mcpServers": {
-        "my-mcp-server": {
-            "command": "node",
+        "yapi-get-interface-mcp": {
+            "command": "npx",
             "args": [
-                "/absolute-path-to/dist/index.js"
+                "yapi-get-interface-mcp",
+                "--email", "your@email.com",
+                "--password", "yourpassword", 
+                "--url", "https://yapi.yourcompany.com"
             ]
         }
     }
 }
 ```
 
-This configuration tells Cursor:
-- There's an MCP server named "my-mcp-server" (keep this the same as the bin entry in package.json)
-- It can be launched by running `node /absolute-path-to/dist/index.js`
+## 环境要求
 
-After saving the configuration:
-1. Cursor will automatically detect the new MCP server and show a prompt like "New MCP server detected: my-mcp-server"
-![Cursor MCP Server Detection Prompt](./docs/assets/cursor-mcp-server-detection-prompt.png)
-2. Click "Enable" in the prompt to activate your server—no need to restart Cursor
-3. You can then open the chat panel and verify the server is connected by checking the available tools
+- Node.js >= 18.0.0
+- pnpm >= 8.0.0
 
-To test your server, you can ask Cursor to use your tool. For example:
-```
-Adds two numbers, 1+1
-```
+## 安装
 
-Cursor will:
-1. Analyze your request
-2. Identify the appropriate tool to use
-3. Request your approval for tool usage, showing the tool name and arguments
-![Cursor MCP Tool Aapproval Prompt](./docs/assets/cursor-mcp-tool-approval-prompt.png)
-4. Execute the tool through the MCP server
-5. Display the results in the chat
+使用npx可以直接运行，无需本地安装：
 
-![Cursor MCP Tool Execution](./docs/assets/cursor-mcp-tool-execution.png)
+```bash
+# 克隆项目
+git clone https://github.com/Gorvey/yapi-get-interface-mcp.git
+cd yapi-get-interface-mcp
 
-*If you can't see the execution flow shown above, open Cursor Settings, select MCP, and make sure your MCP Server is enabled.*
+# 安装依赖
+pnpm install
 
-![](./docs/assets/cursor-mcp-server-status-settings.png)
-
-It may also throw errors like the following:
-
-![Cursor MCP Tool Execution](./docs/assets/cursor-mcp-tool-execution-error-and-retry.png)
-
-*In the above image, you can see 'Invalid type for parameter 'a' in tool add', which is due to Cursor passing incorrect parameter types when calling the large language model. However, Cursor will correct the parameter types based on the error message returned and attempt to make the request again.*
-
-
-The tool execution flow in Cursor follows the same pattern as described in the previous section:
-1. Cursor creates an MCP Client that maintains a connection with your server
-2. The AI analyzes available tools and decides which to use
-3. The client executes the chosen tool through the server
-4. Results are returned to the AI for processing
-5. The final response is displayed in the chat
-
-Now that we've tested the server with Cursor, for more details on how to set up MCP servers in Cursor, see [MCP docs for Cursor](https://docs.cursor.com/integrations/mcp). 
-
-Let's try it with another MCP host - Claude for Desktop.
-
-## Testing your server with Claude for Desktop
-
-*Claude for Desktop is not yet available on Linux. Linux users can proceed to the [Building a client](https://modelcontextprotocol.io/quickstart/client) tutorial to build an MCP client that connects to the server we just built.*
-
-First, make sure you have Claude for Desktop installed. [You can install the latest version here.](https://claude.ai/download) If you already have Claude for Desktop, **make sure it's updated to the latest version.**
-
-We'll need to configure Claude for Desktop for whichever MCP servers you want to use.
-
-Open the configuration file at `~/Library/Application Support/Claude/claude_desktop_config.json`. If this is your first time configuring it, the chances are the file does not exist yet. Simple create one with the same name.
-
-Let's add the following to it.
-
-```json Javascript
-{
-    "mcpServers": {
-        "my-mcp-server": {
-            "command": "node",
-            "args": [
-                "/absolute-path-to/dist/index.js"
-            ]
-        }
-    }
-}
+# 构建项目
+pnpm run build
 ```
 
-This will tell Claude for Desktop that
 
-There's an MCP server named "my-mcp-server". I will recommend keep this the same as the bin entry in package.json.
-It can be launched by running node /absolute-path-to/build/index.js
-Save it and restart Claude for Desktop.
+## 开发指南
 
-To make sure that the configuration is indeed reflected and Claude for Desktop is picking up the tool we are exposing in our MCP Server, we can hover over the hammer icon and see that it is telling us 1 MCP tools available, assuming you don't have any other MCP servers added to the configuration file.
+### 项目结构
 
-![MCP Tools Available Indicator](./docs/assets/mcp-tools-available-indicator.png)
+```
+src/
+├── config/           # 配置管理
+│   └── yapi-config.ts
+├── server/           # MCP服务器
+│   ├── server.ts
+│   ├── tools.ts
+│   └── resources.ts  
+├── yapi/             # YAPI客户端
+│   └── client.ts
+└── index.ts          # 入口文件
+```
 
-If we click on the hammer icon, we should see our tool listed like following.
+### 开发脚本
 
-![MCP Tools List View](./docs/assets/mcp-tools-list-view.png)
+```bash
+# 开发模式（带示例配置）
+pnpm run dev
 
-If the hammer icon has shown up, you can now test your server by running the following command in Claude for Desktop:
+# 监听文件变化自动构建
+pnpm run watch
 
-`Adds two numbers, 1+1`
+# 清理构建文件
+pnpm run clean
 
-You should see it asking for the permission to use the tool. Claude will not do anything without our permission. We will have to explicitly agree.
+# 构建项目
+pnpm run build
 
-![MCP Tool Permission Request Dialog](./docs/assets/mcp-tool-permission-dialog.png)
+# 使用MCP Inspector调试
+pnpm run inspector
+```
 
-If you click on the `Allow for this chat` or `Allow once` button, you should see the result of the tool execution.
+### 调试
 
-![MCP Tool Execution Result](./docs/assets/mcp-tool-execution-result.png)
+使用MCP Inspector进行调试：
 
-For more details on how to set up MCP servers in Claude Desktop, see [MCP docs for Claude Desktop](https://modelcontextprotocol.io/quickstart/user).
+```bash
+pnpm run inspector
+```
 
-That's it!
+这将启动一个交互式界面，帮助你测试和调试MCP工具。
 
-## Understanding the MCP Tool Execution Flow
+## 常见问题
 
-If you are familiar with Foundation Models/LLM/Function calls, what happened right here might seem to be pretty straightforward, but let's be explicit because it is actually more than function calls!
+### 1. YAPI连接失败
+- 检查YAPI服务器地址是否正确
+- 确认邮箱和密码是否正确
+- 检查网络连接和YAPI服务器可访问性
 
-First of all, when we add an MCP Server to `claude_desktop_config.json`
+### 2. 接口ID无效
+- 确保接口ID是数字格式
+- 检查接口在YAPI中是否存在
+- 确认有访问该接口的权限
 
-1. Claude for Desktop will create a new MCP Client that maintain a 1-to-1 connections with the server.
-2. It then ask the client to list the tools exposed by the server. That's what we saw when we click on the hammer icon.
+### 3. MCP服务器未被识别
+- 确保已正确构建项目（`pnpm run build`）
+- 检查配置文件中的路径是否正确
+- 重启AI开发工具
 
-We then enter our prompt:
+## 许可证
 
-1. The host (Claude for Desktop in this case) sends our question to AI (Claude here).
-2. AI analyzes the available tools and decides which one(s) to use with the arguments required by the tool.
-3. The host determines which MCP Client is responsible for the MCP Server that exposes the tool
-4. Executes the chosen tool(s) by having the client calling the the server and obtains a response(result)
-5. Sends tool execution result back to AI for coordinating a final natural language response.
-6. Displays the response
+MIT License
 
-(Keep this flow some where in your mind because this is what we will be creating next! Our MCP Host with Clients!)
+## 贡献
 
- Now that we have a solid foundation! To help you get started with building MCP clients quickly, we've created a convenient command-line tool [`create-mcp-client-app`](https://github.com/boguan/create-mcp-app/blob/main/apps/create-mcp-client-app/README.md).
+欢迎提交Issue和Pull Request来改进这个项目。
+
+## 更多信息
+
+- [MCP协议文档](https://modelcontextprotocol.io/)
+- [Cursor MCP集成文档](https://docs.cursor.com/integrations/mcp)
