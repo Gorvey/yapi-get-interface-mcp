@@ -14,7 +14,7 @@
 - `id`：接口ID（数字格式）
 
 **使用示例：**
-![](./docs/assets/yapi-get-interface.png)
+![](https://file.cooool.fun/yapi-get-interface.png)
 
 AI工具会自动调用该工具并返回接口的完整信息，包括：
 - 接口基本信息（名称、路径、方法等）

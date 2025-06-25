@@ -1,12 +1,12 @@
 {
   "name": "yapi-get-interface-mcp",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "一个用于获取YAPI接口详情的MCP服务器",
   "type": "module",
   "bin": {
-    "yapi-get-interface-mcp": "dist/index.js"
+    "yapi-get-interface-mcp": "dist/index.cjs"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "files": [
     "dist/**/*",
     "README.md",
@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gorvey/yapi-get-interface-mcp.git"
+    "url": "git+https://github.com/Gorvey/yapi-get-interface-mcp.git"
   },
   "homepage": "https://github.com/Gorvey/yapi-get-interface-mcp#readme",
   "bugs": {
@@ -31,9 +31,9 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "pnpm run clean && tsc",
+    "build": "pnpm run clean && rslib build",
     "prepare": "pnpm run build",
-    "watch": "tsc --watch",
+    "watch": "rslib build --watch",
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
     "start": "pnpm run build && node dist/index.js",
     "dev": "pnpm run build && node dist/index.js --email user@example.com --password pass --url https://yapi.example.com --project-id 123",
@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0",
-    "zod": "^3.22.4",
     "axios": "^1.6.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
+    "@rslib/core": "^0.7.1",
     "@types/fs-extra": "^11.0.4",
     "@types/js-beautify": "^1.14.3",
+    "@types/node": "^22.14.1",
     "@types/yargs": "^17.0.32",
-    "typescript": "^5.3.3",
     "rimraf": "^5.0.0"
   },
   "packageManager": "pnpm@10.0.0",
